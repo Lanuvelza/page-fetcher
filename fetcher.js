@@ -17,8 +17,14 @@ const fletcher = function(arg, path) {
 
     fs.exists(path, (exists) => {
       if (!exists) {
-        throw new Error("file path does not exist");
+        fs.writeFile(path, body, (err) => {
+          if (err) {
+            throw err;
+          }
+          console.log(`Downloaded and saved ${body.length} bytes to ${path}`);
+        });
       } else {
+        
         const rl = readline.createInterface({
           input: process.stdin,
           output: process.stdout
